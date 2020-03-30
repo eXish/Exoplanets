@@ -111,7 +111,10 @@ public class exoplanets : MonoBehaviour
         }
         else
         {
-            targetPlanet = Array.IndexOf(planetsCcw, planetsCcw.Distinct().First());
+            if (planetsCcw.Count(x => x) == 2)
+                targetPlanet = Array.IndexOf(planetsCcw, planetsCcw.First(x => !x));
+            else
+                targetPlanet = Array.IndexOf(planetsCcw, planetsCcw.First(x => x));
             Debug.LogFormat("[Exoplanets #{0}] The {1} planet is orbiting {2}, so it is the initial target planet.", moduleId, positionNames[targetPlanet], planetsCcw[targetPlanet] ? "counterclockwise" : "clockwise");
         }
         targetDigit = planetSurfaces[targetPlanet];
