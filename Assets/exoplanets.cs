@@ -24,7 +24,7 @@ public class exoplanets : MonoBehaviour
     public Renderer[] dummyPlanets;
     public Color solveColor;
 
-    private static readonly float[] sizes = new float[3] { .035f, .025f, .015f };
+    private static readonly float[] sizes = new float[3] { .015f, .025f, .035f };
     private static readonly float[] speeds = new float[] { 5f, 10f, 20f, 40f };
     private int[] planetSizes = new int[3];
     private float[] planetSpeeds = new float[3];
