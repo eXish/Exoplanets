@@ -70,7 +70,7 @@ public class exoplanets : MonoBehaviour
     {
         StartCoroutine(DisableDummies());
         statusLight.SetActive(false);
-        batteryOffset = !starCcw ? 1 : -1;
+        starCcw = rnd.Range(0, 2) != 0;
         planetSizes = Enumerable.Range(0, 3).ToList().Shuffle().ToArray();
         planetSpeeds = speeds.ToList().Shuffle().Take(3).ToArray();
         for (int i = 0; i < 3; i++)
@@ -79,7 +79,6 @@ public class exoplanets : MonoBehaviour
             planetsCcw[i] = rnd.Range(0, 2) != 0;
             Debug.LogFormat("[Exoplanets #{0}] The {1} planet has an angular velocity of {2}.", moduleId, positionNames[i], (int)planetSpeeds[i]);
         }
-        starCcw = rnd.Range(0, 2) != 0;
         for (int i = 0; i < 3; i++)
             orbits[i] = StartCoroutine(Orbit(pivots[i], i));
         foreach (Renderer planet in planets)
@@ -120,13 +119,7 @@ public class exoplanets : MonoBehaviour
         targetDigit = planetSurfaces[targetPlanet];
         startingTargetDigit = targetDigit;
         Debug.LogFormat("[Exoplanets #{0}] The initial target digit is {1}.", moduleId, targetDigit);
-        for (int i = 0; i < bomb.GetBatteryCount(); i++)
-        {
-            tablePosition += batteryOffset;
-            if (tablePosition == -1)
-                tablePosition = 7;
-            tablePosition %= 8;
-        }
+        tablePosition = (tablePosition + bomb.GetBatteryCount() * (starCcw ? 7 : 1)) % 8;
         Debug.LogFormat("[Exoplanets #{0}] The star is rotating {1} and there are {2} batteries.", moduleId, !starCcw ? "clockwise" : "counterclockwise", bomb.GetBatteryCount());
         tableRing = targetPlanet;
         for (int i = 0; i < 3; i++)
@@ -141,16 +134,8 @@ public class exoplanets : MonoBehaviour
              offset %= bomb.GetBatteryHolderCount();
         else
             offset %= 5;
-        for (int i = 0; i < offset; i++)
-        {
-            if (!planetsCcw[tableRing])
-                tablePosition++;
-            else
-                tablePosition--;
-            if (tablePosition == -1)
-                tablePosition = 7;
-            tablePosition %= 8;
-        }
+        offset += bomb.GetPortCount();
+        tablePosition = (tablePosition + offset * (planetsCcw[tableRing] ? 7 : 1)) % 8;
         var prevPlanet = targetPlanet;
         var prevDigit = targetDigit;
         Debug.LogFormat("[Exoplanets #{0}] Using rule {1}.", moduleId, table[tableRing][tablePosition]);
@@ -268,6 +253,8 @@ public class exoplanets : MonoBehaviour
                 break;
             default:
                 if (planetSurfaces[targetPlanet] == planetSurfaces.Min())
+                    targetPlanet = Array.IndexOf(planetSurfaces, planetSurfaces.Max());
+                else
                     targetPlanet = Array.IndexOf(planetSurfaces, planetSurfaces.Where(x => x < planetSurfaces[targetPlanet]).Min());
                 break;
         }
@@ -321,6 +308,8 @@ public class exoplanets : MonoBehaviour
     void PressStar()
     {
         if (isMoving && !moduleSolved)
+            return;
+        if (moduleSolved)
             return;
         else
         {
