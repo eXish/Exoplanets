@@ -450,7 +450,7 @@ public class exoplanets : MonoBehaviour
         dummyStar.gameObject.SetActive(false);
         foreach (Renderer planet in dummyPlanets)
             planet.gameObject.SetActive(false);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(.75f);
         background.material.color = solveColor;
         audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, transform);
     }
@@ -462,5 +462,48 @@ public class exoplanets : MonoBehaviour
         dummyStar.gameObject.SetActive(false);
         foreach (Renderer planet in dummyPlanets)
             planet.gameObject.SetActive(false);
+    }
+
+    // Twitch Plays
+    #pragma warning disable 414
+    private readonly string TwitchHelpMessage = @"!{0} <inner/middle/outer> <0-9> [Presses the planet in that position on that digit] | !{0} star [Presses the star]";
+    #pragma warning restore 414
+
+    IEnumerator ProcessTwitchCommand(string input)
+    {
+        var cmd = input.ToLowerInvariant();
+        if (cmd == "star")
+        {
+            yield return null;
+            starButton.OnInteract();
+            yield break;
+        }
+        else if (positionNames.Any(x => cmd.StartsWith(x + " ")))
+        {
+            var processedCmd = cmd.Split(' ').ToArray();
+            var digits = new string[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+            if (processedCmd.Length != 2 || !digits.Any(d => processedCmd[1] == d))
+                yield break;
+            else
+            {
+                while (((int)bomb.GetTime()) % 10 != Array.IndexOf(digits, processedCmd[1]))
+                    yield return null;
+                yield return null;
+                planetButtons[Array.IndexOf(positionNames, processedCmd[0])].OnInteract();
+            }
+        }
+        else
+            yield break;
+    }
+
+    IEnumerator TwitchHandleForcedSolve()
+    {
+        yield return true;
+        if (planetsHidden)
+            starButton.OnInteract();
+        yield return new WaitForSeconds(1.75f);
+        while (((int)bomb.GetTime()) % 10 != targetDigit)
+            yield return null;
+        planetButtons[targetPlanet].OnInteract();
     }
 }
