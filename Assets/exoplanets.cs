@@ -498,7 +498,6 @@ public class exoplanets : MonoBehaviour
 
     IEnumerator TwitchHandleForcedSolve()
     {
-        yield return true;
         if (planetsHidden)
             starButton.OnInteract();
         yield return new WaitForSeconds(1.75f);
