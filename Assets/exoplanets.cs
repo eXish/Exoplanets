@@ -64,6 +64,7 @@ public class exoplanets : MonoBehaviour
         foreach (KMSelectable button in planetButtons)
             button.OnInteract += delegate () { PressPlanet(button); return false; };
         starButton.OnInteract += delegate () { PressStar(); return false; };
+        bomb.OnBombExploded += delegate { HandleDetonation(); };
     }
 
     void Start()
@@ -462,6 +463,16 @@ public class exoplanets : MonoBehaviour
         dummyStar.gameObject.SetActive(false);
         foreach (Renderer planet in dummyPlanets)
             planet.gameObject.SetActive(false);
+    }
+
+    void HandleDetonation()
+    {
+        StopAllCoroutines();
+        if (ambianceRef != null)
+        {
+            ambianceRef.StopSound();
+            ambianceRef = null;
+        }
     }
 
     // Twitch Plays
