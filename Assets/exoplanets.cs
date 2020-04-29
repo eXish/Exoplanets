@@ -30,6 +30,7 @@ public class exoplanets : MonoBehaviour
     private float[] planetSpeeds = new float[3];
     private int[] planetSurfaces = new int[3];
     private bool[] planetsCcw = new bool[3];
+    private bool[] spinningCcw = new bool[3];
 
     private bool starCcw;
     private int batteryOffset;
@@ -78,6 +79,7 @@ public class exoplanets : MonoBehaviour
         {
             planetSurfaces[i] = rnd.Range(0, 10);
             planetsCcw[i] = rnd.Range(0, 2) != 0;
+            spinningCcw[i] = rnd.Range(0, 2) != 0;
             Debug.LogFormat("[Exoplanets #{0}] The {1} planet has an angular velocity of {2}.", moduleId, positionNames[i], (int)planetSpeeds[i]);
         }
         for (int i = 0; i < 3; i++)
@@ -363,7 +365,7 @@ public class exoplanets : MonoBehaviour
         var pX = planet.transform.localEulerAngles.x;
         var pZ = planet.transform.localEulerAngles.z;
         var elapsed = 0f;
-        var speed = planetSpeeds[ix];
+        var speed = new float[] { 4f, 6f, 7f, 8f }.PickRandom();
         if (!planetsCcw[ix])
             speed = -speed;
         while (true)
