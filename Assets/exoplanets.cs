@@ -47,6 +47,7 @@ public class exoplanets : MonoBehaviour
     };
 
     private static readonly string[] positionNames = new string[] { "inner", "middle", "outer" };
+    private static readonly string[] sizeNames = new string[] { "small", "medium", "large" };
     private Vector3[] savedPositions = new Vector3[3];
     private KMAudio.KMAudioRef ambianceRef;
     private Coroutine starSpinning;
@@ -81,6 +82,7 @@ public class exoplanets : MonoBehaviour
             planetsCcw[i] = rnd.Range(0, 2) != 0;
             spinningCcw[i] = rnd.Range(0, 2) != 0;
             Debug.LogFormat("[Exoplanets #{0}] The {1} planet has an angular velocity of {2}.", moduleId, positionNames[i], (int)planetSpeeds[i]);
+            Debug.LogFormat("[Exoplanets #{0}] The {1} planet is {2}.", moduleId, positionNames[i], sizeNames[planetSizes[i]]);
         }
         for (int i = 0; i < 3; i++)
             orbits[i] = StartCoroutine(Orbit(pivots[i], i));
@@ -94,7 +96,6 @@ public class exoplanets : MonoBehaviour
             planet.transform.localRotation = rnd.rotation;
             tilts[ix] = StartCoroutine(Spinning(planet, ix));
         }
-
         starSpinning = StartCoroutine(StarMovement());
         GenerateSolution();
     }
@@ -220,7 +221,7 @@ public class exoplanets : MonoBehaviour
                 if (targetPlanet == Array.IndexOf(planetSpeeds, planetSpeeds.Max()))
                     targetPlanet = Array.IndexOf(planetSpeeds, planetSpeeds.Min());
                 else
-                    targetPlanet = Array.IndexOf(planetSpeeds, planetSpeeds.Where(x => x > planetSpeeds[targetPlanet]).Min());
+                    targetPlanet = Array.IndexOf(planetSpeeds, planetSpeeds.Where(x => x < planetSpeeds[targetPlanet]).Min());
                 break;
             case "P":
                 targetPlanet = targetPlanet == 0 ? 2 : 0;
@@ -235,7 +236,7 @@ public class exoplanets : MonoBehaviour
                 if (targetPlanet == Array.IndexOf(planetSpeeds, planetSpeeds.Min()))
                     targetPlanet = Array.IndexOf(planetSpeeds, planetSpeeds.Max());
                 else
-                    targetPlanet = Array.IndexOf(planetSpeeds, planetSpeeds.Where(x => x < planetSpeeds[targetPlanet]).Max());
+                    targetPlanet = Array.IndexOf(planetSpeeds, planetSpeeds.Where(x => x > planetSpeeds[targetPlanet]).Max());
                 break;
             case "T":
                 targetDigit = (targetDigit + bomb.GetSerialNumberNumbers().Last()) % 10;
