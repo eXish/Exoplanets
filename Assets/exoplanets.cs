@@ -218,10 +218,10 @@ public class exoplanets : MonoBehaviour
                 targetDigit = (targetDigit + bomb.GetSerialNumberNumbers().ToArray()[1]) % 10;
                 break;
             case "O":
-                if (targetPlanet == Array.IndexOf(planetSpeeds, planetSpeeds.Max()))
-                    targetPlanet = Array.IndexOf(planetSpeeds, planetSpeeds.Min());
+                if (targetPlanet == Array.IndexOf(planetSpeeds, planetSpeeds.Min()))
+                    targetPlanet = Array.IndexOf(planetSpeeds, planetSpeeds.Max());
                 else
-                    targetPlanet = Array.IndexOf(planetSpeeds, planetSpeeds.Where(x => x < planetSpeeds[targetPlanet]).Min());
+                    targetPlanet = Array.IndexOf(planetSpeeds, planetSpeeds.Where(x => x < planetSpeeds[targetPlanet]).Max());
                 break;
             case "P":
                 targetPlanet = targetPlanet == 0 ? 2 : 0;
@@ -233,10 +233,10 @@ public class exoplanets : MonoBehaviour
                 targetDigit = (targetDigit + 5) % 10;
                 break;
             case "S":
-                if (targetPlanet == Array.IndexOf(planetSpeeds, planetSpeeds.Min()))
-                    targetPlanet = Array.IndexOf(planetSpeeds, planetSpeeds.Max());
+                if (targetPlanet == Array.IndexOf(planetSpeeds, planetSpeeds.Max()))
+                    targetPlanet = Array.IndexOf(planetSpeeds, planetSpeeds.Min());
                 else
-                    targetPlanet = Array.IndexOf(planetSpeeds, planetSpeeds.Where(x => x > planetSpeeds[targetPlanet]).Max());
+                    targetPlanet = Array.IndexOf(planetSpeeds, planetSpeeds.Where(x => x > planetSpeeds[targetPlanet]).Min());
                 break;
             case "T":
                 targetDigit = (targetDigit + bomb.GetSerialNumberNumbers().Last()) % 10;
