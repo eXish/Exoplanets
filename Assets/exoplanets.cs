@@ -174,10 +174,10 @@ public class exoplanets : MonoBehaviour
                 targetDigit = 9 - targetDigit;
                 break;
             case "F":
-                if (planetsCcw.Distinct().Count() == 0)
-                    targetPlanet = 1;
+                if (planetsCcw.Distinct().Count() == 1)
+                    targetPlanet = 0;
                 else
-                    targetPlanet = Array.IndexOf(planetsCcw, planetsCcw.First(x => x == planetsCcw[targetPlanet]));
+                    targetPlanet = Array.IndexOf(planetsCcw, planetsCcw.First(x => x != planetsCcw[targetPlanet]));
                 break;
             case "G":
                 targetPlanet = Array.IndexOf(planetsCcw, planetsCcw.First(x => x == planetsCcw[targetPlanet]));
