@@ -1167,7 +1167,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: fd685a55a82aec54eb58da6eaab3daea, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2047,7 +2047,7 @@ MonoBehaviour:
   - {fileID: 114782825722588162}
   - {fileID: 114072083063041400}
   IsPassThrough: 0
-  ChildRowLength: 0
+  ChildRowLength: 1
   Highlight: {fileID: 114481041003132964}
   SelectableColliders: []
   DefaultSelectableIndex: 0
