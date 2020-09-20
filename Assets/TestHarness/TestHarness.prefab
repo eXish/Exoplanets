@@ -10932,7 +10932,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e9e94df02e8bb9841addc71c963f78cb, type: 2}
+  - {fileID: 2100000, guid: ea7383a11cc28a24cbea15073b68bf56, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10966,7 +10966,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: ea7383a11cc28a24cbea15073b68bf56, type: 2}
+  - {fileID: 2100000, guid: 451d40bceebd28f4d8d52ce2127536e7, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -13924,7 +13924,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: ea7383a11cc28a24cbea15073b68bf56, type: 2}
+  - {fileID: 2100000, guid: 451d40bceebd28f4d8d52ce2127536e7, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -17766,7 +17766,7 @@ TextMesh:
   m_FontSize: 80
   m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 12800000, guid: 1ebe1d96973a920409b439b3a0e2bb63, type: 3}
+  m_Font: {fileID: 12800000, guid: 451d40bceebd28f4d8d52ce2127536e7, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4289008553
@@ -17892,7 +17892,7 @@ TextMesh:
   m_FontSize: 100
   m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 12800000, guid: 1ebe1d96973a920409b439b3a0e2bb63, type: 3}
+  m_Font: {fileID: 12800000, guid: 451d40bceebd28f4d8d52ce2127536e7, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
@@ -17955,7 +17955,7 @@ TextMesh:
   m_FontSize: 100
   m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 12800000, guid: 1ebe1d96973a920409b439b3a0e2bb63, type: 3}
+  m_Font: {fileID: 12800000, guid: 451d40bceebd28f4d8d52ce2127536e7, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
@@ -17997,7 +17997,7 @@ TextMesh:
   m_FontSize: 200
   m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 12800000, guid: 1ebe1d96973a920409b439b3a0e2bb63, type: 3}
+  m_Font: {fileID: 12800000, guid: 451d40bceebd28f4d8d52ce2127536e7, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4278190080
@@ -20158,20 +20158,13 @@ MonoBehaviour:
   CustomWidget: {fileID: 114213089377510072}
   HighlightPrefab: {fileID: 100000, guid: d78a484c6e87f1b47b6596ac080fe942, type: 2}
   AudioVolume: 0.25
-  AudioClips:
-  - {fileID: 8300000, guid: a47de82b5f181404a95dfb2c7397e2d2, type: 3}
-  - {fileID: 8300000, guid: fa41395272e78594cb320b9c14a24307, type: 3}
-  - {fileID: 8300000, guid: d86eb13543ba25441bdb3d3c02c9036a, type: 3}
-  - {fileID: 8300000, guid: eace67d4f8c10ea48846090dbb77dc7d, type: 3}
-  - {fileID: 8300000, guid: ed6308f189bcff64b9e320b93da2e3c2, type: 3}
-  - {fileID: 8300000, guid: b3ddf0c6a0fe0bb4fbe05dbfa897d148, type: 3}
-  - {fileID: 8300000, guid: 2b09521e09e1d7d469afa45e6eaa36f2, type: 3}
+  AudioClips: []
   StrikeCount: 3
   TimeLimit: 600
   BombSize: 1
   FrontFaceOnly: 1
   EdgeworkConfiguration: {fileID: 0}
-  TwitchPlaysActive: 1
+  TwitchPlaysActive: 0
   TwitchPlaysMode: 0
   turnSpeed: 128
   panSpeed: 4
