@@ -50,6 +50,7 @@ public class exoplanets : MonoBehaviour
     private static readonly string[] sizeNames = new string[] { "small", "medium", "large" };
     private Vector3[] savedPositions = new Vector3[3];
     private KMAudio.KMAudioRef ambianceRef;
+    private KMAudio.KMAudioRef ambianceRef2;
     private Coroutine starSpinning;
     private Coroutine[] orbits = new Coroutine[3];
     private Coroutine[] tilts = new Coroutine[3];
@@ -81,7 +82,7 @@ public class exoplanets : MonoBehaviour
             planetSurfaces[i] = rnd.Range(0, 10);
             planetsCcw[i] = rnd.Range(0, 2) != 0;
             spinningCcw[i] = rnd.Range(0, 2) != 0;
-            Debug.LogFormat("[Exoplanets #{0}] The {1} planet has an angular velocity of {2}.", moduleId, positionNames[i], (int)planetSpeeds[i]);
+            Debug.LogFormat("[Exoplanets #{0}] The {1} planet has an orbital period of {2}.", moduleId, positionNames[i], (int)planetSpeeds[i]);
             Debug.LogFormat("[Exoplanets #{0}] The {1} planet is {2}.", moduleId, positionNames[i], sizeNames[planetSizes[i]]);
         }
         for (int i = 0; i < 3; i++)
@@ -134,6 +135,7 @@ public class exoplanets : MonoBehaviour
     void Modify(int j)
     {
         var offset = ((int)planetSpeeds[tableRing]);
+        offset += planetSurfaces[tableRing];
         if (bomb.GetBatteryHolderCount() != 0)
              offset %= bomb.GetBatteryHolderCount();
         else
@@ -291,6 +293,11 @@ public class exoplanets : MonoBehaviour
             {
                 ambianceRef.StopSound();
                 ambianceRef = null;
+            }
+            if (ambianceRef2 != null)
+            {
+                ambianceRef2.StopSound();
+                ambianceRef2 = null;
             }
             Debug.LogFormat("[Exoplanets #{0}] That was correct. Module solved!", moduleId);
             audio.PlaySoundAtTransform("explosion", transform);
@@ -463,6 +470,8 @@ public class exoplanets : MonoBehaviour
     {
         yield return null;
         ambianceRef = audio.PlaySoundAtTransformWithRef("ambiance", star.transform);
+        yield return new WaitForSeconds(rnd.Range(.5f, 1.5f));
+        ambianceRef2 = audio.PlaySoundAtTransformWithRef("ambiance", star.transform);
         dummyStar.gameObject.SetActive(false);
         foreach (Renderer planet in dummyPlanets)
             planet.gameObject.SetActive(false);
