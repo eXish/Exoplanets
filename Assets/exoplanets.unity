@@ -273,13 +273,13 @@ Prefab:
     - target: {fileID: 114848120511536268, guid: 8814ea52310d2614a9feda02ec355ae4,
         type: 2}
       propertyPath: TwitchPlaysActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 102613506082432776, guid: 8814ea52310d2614a9feda02ec355ae4,
         type: 2}
       propertyPath: m_Font
       value: 
-      objectReference: {fileID: 12800000, guid: 1ebe1d96973a920409b439b3a0e2bb63,
+      objectReference: {fileID: 12800000, guid: 451d40bceebd28f4d8d52ce2127536e7,
         type: 3}
     - target: {fileID: 23746240955649624, guid: 8814ea52310d2614a9feda02ec355ae4,
         type: 2}
@@ -290,7 +290,7 @@ Prefab:
         type: 2}
       propertyPath: m_Font
       value: 
-      objectReference: {fileID: 12800000, guid: 1ebe1d96973a920409b439b3a0e2bb63,
+      objectReference: {fileID: 12800000, guid: 451d40bceebd28f4d8d52ce2127536e7,
         type: 3}
     - target: {fileID: 23250615886371998, guid: 8814ea52310d2614a9feda02ec355ae4,
         type: 2}

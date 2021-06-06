@@ -469,6 +469,9 @@ public class exoplanets : MonoBehaviour
     IEnumerator DisableDummies()
     {
         yield return null;
+        dummyStar.gameObject.SetActive(false);
+        foreach (Renderer planet in dummyPlanets)
+            planet.gameObject.SetActive(false);
         ambianceRef = audio.PlaySoundAtTransformWithRef("ambiance", star.transform);
         yield return new WaitForSeconds(rnd.Range(.5f, 1.5f));
         ambianceRef2 = audio.PlaySoundAtTransformWithRef("ambiance", star.transform);
