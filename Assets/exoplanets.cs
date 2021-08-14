@@ -123,6 +123,7 @@ public class exoplanets : MonoBehaviour
         }
         targetDigit = planetSurfaces[targetPlanet];
         startingTargetDigit = targetDigit;
+        startingTargetPlanet = targetPlanet;
         Debug.LogFormat("[Exoplanets #{0}] The initial target digit is {1}.", moduleId, targetDigit);
         tablePosition = (tablePosition + bomb.GetBatteryCount() * (starCcw ? 7 : 1)) % 8;
         Debug.LogFormat("[Exoplanets #{0}] The star is rotating {1} and there are {2} batteries.", moduleId, !starCcw ? "clockwise" : "counterclockwise", bomb.GetBatteryCount());
