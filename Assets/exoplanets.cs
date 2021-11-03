@@ -262,7 +262,7 @@ public class exoplanets : MonoBehaviour
                 if (planetSurfaces[targetPlanet] == planetSurfaces.Min())
                     targetPlanet = Array.IndexOf(planetSurfaces, planetSurfaces.Max());
                 else
-                    targetPlanet = Array.IndexOf(planetSurfaces, planetSurfaces.Where(x => x < planetSurfaces[targetPlanet]).Min());
+                    targetPlanet = Array.IndexOf(planetSurfaces, planetSurfaces.Where(x => x < planetSurfaces[targetPlanet]).Max());
                 break;
         }
         if (targetPlanet != prevPlanet)
