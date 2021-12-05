@@ -9,6 +9,7 @@ using rnd = UnityEngine.Random;
 public class exoplanets : MonoBehaviour
 {
     public new KMAudio audio;
+    private KMAudio.KMAudioRef ambianceRef;
     public KMBombInfo bomb;
     public KMBombModule module;
 
@@ -24,8 +25,8 @@ public class exoplanets : MonoBehaviour
     public Renderer[] dummyPlanets;
     public Color solveColor;
 
-    private static readonly float[] sizes = new float[3] { .015f, .025f, .035f };
-    private static readonly float[] speeds = new float[] { 5f, 10f, 20f, 40f };
+    private static readonly float[] sizes = new[] { .015f, .025f, .035f };
+    private static readonly float[] speeds = new[] { 5f, 10f, 20f, 40f };
     private int[] planetSizes = new int[3];
     private float[] planetSpeeds = new float[3];
     private int[] planetSurfaces = new int[3];
@@ -41,36 +42,65 @@ public class exoplanets : MonoBehaviour
     private int tablePosition;
     private int tableRing;
     private static readonly string[][] table = new string[][] {
-        new string[] { "A", "B", "C", "D", "E", "F", "G", "H" },
-        new string[] { "I", "J", "K", "L", "M", "N", "O", "P" },
-        new string[] { "Q", "R", "S", "T", "U", "V", "W", "X" }
+        new[] { "A", "B", "C", "D", "E", "F", "G", "H" },
+        new[] { "I", "J", "K", "L", "M", "N", "O", "P" },
+        new[] { "Q", "R", "S", "T", "U", "V", "W", "X" }
     };
 
-    private static readonly string[] positionNames = new string[] { "inner", "middle", "outer" };
-    private static readonly string[] sizeNames = new string[] { "small", "medium", "large" };
+    private static readonly string[] positionNames = new[] { "inner", "middle", "outer" };
+    private static readonly string[] sizeNames = new[] { "small", "medium", "large" };
     private Vector3[] savedPositions = new Vector3[3];
-    private KMAudio.KMAudioRef ambianceRef;
-    private KMAudio.KMAudioRef ambianceRef2;
     private Coroutine starSpinning;
     private Coroutine[] orbits = new Coroutine[3];
     private Coroutine[] tilts = new Coroutine[3];
     private bool planetsHidden;
     private bool isMoving;
 
-    static int moduleIdCounter = 1;
-    int moduleId;
+    private static int moduleIdCounter = 1;
+    private int moduleId;
     private bool moduleSolved;
 
-    void Awake()
+    #region ModSettings
+    exoplanetsSettings settings = new exoplanetsSettings();
+#pragma warning disable 414
+    private static Dictionary<string, object>[] TweaksEditorSettings = new Dictionary<string, object>[]
+    {
+      new Dictionary<string, object>
+      {
+        { "Filename", "Exoplanets Settings.json"},
+        { "Name", "Exoplanets" },
+        { "Listings", new List<Dictionary<string, object>>
+        {
+          new Dictionary<string, object>
+          {
+            { "Key", "PlayAmbiance" },
+            { "Text", "Play the space-y ambiance?"}
+          }
+        }}
+      }
+    };
+#pragma warning restore 414
+
+    private class exoplanetsSettings
+    {
+        public bool playAmbiance = true;
+    }
+    #endregion
+
+    private void Awake()
     {
         moduleId = moduleIdCounter++;
+        var modConfig = new modConfig<exoplanetsSettings>("Exoplanets Settings");
+        settings = modConfig.read();
+        modConfig.write(settings);
+
         foreach (KMSelectable button in planetButtons)
             button.OnInteract += delegate () { PressPlanet(button); return false; };
         starButton.OnInteract += delegate () { PressStar(); return false; };
         bomb.OnBombExploded += delegate { HandleDetonation(); };
     }
 
-    void Start()
+    private void Start()
     {
         StartCoroutine(DisableDummies());
         statusLight.SetActive(false);
@@ -101,7 +131,7 @@ public class exoplanets : MonoBehaviour
         GenerateSolution();
     }
 
-    void GenerateSolution()
+    private void GenerateSolution()
     {
         if (!planetsCcw.Contains(true))
         {
@@ -119,7 +149,7 @@ public class exoplanets : MonoBehaviour
                 targetPlanet = Array.IndexOf(planetsCcw, planetsCcw.First(x => !x));
             else
                 targetPlanet = Array.IndexOf(planetsCcw, planetsCcw.First(x => x));
-            Debug.LogFormat("[Exoplanets #{0}] The {1} planet is orbiting {2}, so it is the initial target planet.", moduleId, positionNames[targetPlanet], planetsCcw[targetPlanet] ? "counterclockwise" : "clockwise");
+            Debug.LogFormat("[Exoplanets #{0}] The {1} planet is orbiting {2}, so it is the initial target planet.", moduleId, positionNames[startingTargetPlanet], planetsCcw[startingTargetPlanet] ? "counterclockwise" : "clockwise");
         }
         targetDigit = planetSurfaces[targetPlanet];
         startingTargetDigit = targetDigit;
@@ -133,12 +163,12 @@ public class exoplanets : MonoBehaviour
         Debug.LogFormat("[Exoplanets #{0}] The final solution is to press the {1} planet on a {2}.", moduleId, positionNames[targetPlanet], targetDigit);
     }
 
-    void Modify(int j)
+    private void Modify(int j)
     {
         var offset = ((int)planetSpeeds[tableRing]);
         offset += planetSurfaces[tableRing];
         if (bomb.GetBatteryHolderCount() != 0)
-             offset %= bomb.GetBatteryHolderCount();
+            offset %= bomb.GetBatteryHolderCount();
         else
             offset %= 5;
         offset += bomb.GetPortCount();
@@ -146,7 +176,7 @@ public class exoplanets : MonoBehaviour
         var prevPlanet = targetPlanet;
         var prevDigit = targetDigit;
         Debug.LogFormat("[Exoplanets #{0}] Using rule {1}.", moduleId, table[tableRing][tablePosition]);
-        switch(table[tableRing][tablePosition])
+        switch (table[tableRing][tablePosition])
         {
             case "A":
                 if (planetSizes[targetPlanet] == 2)
@@ -290,15 +320,10 @@ public class exoplanets : MonoBehaviour
         {
             module.HandlePass();
             moduleSolved = true;
-            if (ambianceRef != null)
+            if (ambianceRef != null && settings.playAmbiance)
             {
                 ambianceRef.StopSound();
                 ambianceRef = null;
-            }
-            if (ambianceRef2 != null)
-            {
-                ambianceRef2.StopSound();
-                ambianceRef2 = null;
             }
             Debug.LogFormat("[Exoplanets #{0}] That was correct. Module solved!", moduleId);
             audio.PlaySoundAtTransform("explosion", transform);
@@ -398,7 +423,7 @@ public class exoplanets : MonoBehaviour
         }
     }
 
-    IEnumerator BackgroundMoveMent()
+    IEnumerator BackgroundMovement()
     {
         var horizontalScrollSpeed = .001f;
         var verticalScrollSpeed = .001f;
@@ -411,10 +436,10 @@ public class exoplanets : MonoBehaviour
         }
     }
 
-    IEnumerator SolveAnimation()
+    private IEnumerator SolveAnimation()
     {
         var elapsed = 0f;
-        var duration = 6f;
+        var duration = 4f;
         for (int i = 0; i < 3; i++)
         {
             savedPositions[i] = planets[i].transform.localPosition;
@@ -427,6 +452,7 @@ public class exoplanets : MonoBehaviour
             var fade = Mathf.Lerp(1f, 0f, elapsed / duration);
             foreach (Renderer planet in planets)
                 planet.material.color = new Color(fade, fade, fade);
+            star.material.color = new Color(fade, fade, fade);
             yield return null;
             elapsed += Time.deltaTime;
         }
@@ -437,19 +463,10 @@ public class exoplanets : MonoBehaviour
             dummyPlanets[i].gameObject.SetActive(true);
             dummyPlanets[i].transform.localPosition = savedPositions[i];
         }
-        elapsed = 0f;
-        duration = 3f;
-        while (elapsed < duration)
-        {
-            var fade = Mathf.Lerp(1f, 0f, elapsed / duration);
-            star.material.color = new Color(fade, fade, fade);
-            yield return null;
-            elapsed += Time.deltaTime;
-        }
         star.gameObject.SetActive(false);
         dummyStar.gameObject.SetActive(true);
         elapsed = 0f;
-        duration = 3.5f;
+        duration = 3f;
         while (elapsed < duration)
         {
             var fade = Mathf.Lerp(1f, 0f, elapsed / duration);
@@ -467,24 +484,24 @@ public class exoplanets : MonoBehaviour
         audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, transform);
     }
 
-    IEnumerator DisableDummies()
+    private IEnumerator DisableDummies()
     {
         yield return null;
         dummyStar.gameObject.SetActive(false);
         foreach (Renderer planet in dummyPlanets)
             planet.gameObject.SetActive(false);
-        ambianceRef = audio.PlaySoundAtTransformWithRef("ambiance", star.transform);
+        if (settings.playAmbiance)
+            ambianceRef = audio.PlaySoundAtTransformWithRef("ambiance", star.transform);
         yield return new WaitForSeconds(rnd.Range(.5f, 1.5f));
-        ambianceRef2 = audio.PlaySoundAtTransformWithRef("ambiance", star.transform);
         dummyStar.gameObject.SetActive(false);
         foreach (Renderer planet in dummyPlanets)
             planet.gameObject.SetActive(false);
     }
 
-    void HandleDetonation()
+    private void HandleDetonation()
     {
         StopAllCoroutines();
-        if (ambianceRef != null)
+        if (ambianceRef != null && settings.playAmbiance)
         {
             ambianceRef.StopSound();
             ambianceRef = null;
@@ -492,11 +509,11 @@ public class exoplanets : MonoBehaviour
     }
 
     // Twitch Plays
-    #pragma warning disable 414
+#pragma warning disable 414
     private readonly string TwitchHelpMessage = @"!{0} <inner/middle/outer> <0-9> [Presses the planet in that position on that digit] | !{0} star [Presses the star]";
-    #pragma warning restore 414
+#pragma warning restore 414
 
-    IEnumerator ProcessTwitchCommand(string input)
+    private IEnumerator ProcessTwitchCommand(string input)
     {
         var cmd = input.ToLowerInvariant();
         if (cmd == "star")
@@ -523,7 +540,7 @@ public class exoplanets : MonoBehaviour
             yield break;
     }
 
-    IEnumerator TwitchHandleForcedSolve()
+    private IEnumerator TwitchHandleForcedSolve()
     {
         if (planetsHidden)
             starButton.OnInteract();

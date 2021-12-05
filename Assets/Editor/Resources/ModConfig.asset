@@ -17,8 +17,8 @@ MonoBehaviour:
   description: "Balenci\u2019, Balenci\u2019, Balenci\u2019, Balenci\u2019, Balenci\u2019,
     Balenci\u2019, Balenci\u2019, Balenci\u2019, Balenci\u2019, Balenci\u2019, Balenci\u2019,
     Balenci\u2019, Balenci\u2019, Balenci\u2019, Balenci\u2019.\r\n\r\nModule idea
-    by EpicToast, implementation by TasThing.\r\n\r\nManual HTML: https://ktane.timwi.de/HTML/Exoplanets.html\r\nManual
-    PDF: https://ktane.timwi.de/PDF/Exoplanets.pdf"
-  version: 1.2.3
+    by EpicToast, implementation by TasThing.\r\n\r\n[url=https://ktane.timwi.de/HTML/Exoplanets.html\r]Manual
+    HTML[/url]\n[url=https://ktane.timwi.de/PDF/Exoplanets.pdf]Manual PDF[/url]"
+  version: 1.2.4
   outputFolder: build
   previewImage: {fileID: 2800000, guid: 0e84f0ca32e205847ace2c87b977d572, type: 3}
