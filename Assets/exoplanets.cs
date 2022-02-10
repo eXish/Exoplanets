@@ -128,6 +128,7 @@ public class exoplanets : MonoBehaviour
             tilts[ix] = StartCoroutine(Spinning(planet, ix));
         }
         starSpinning = StartCoroutine(StarMovement());
+        StartCoroutine(BackgroundMovement());
         GenerateSolution();
     }
 
@@ -149,7 +150,7 @@ public class exoplanets : MonoBehaviour
                 targetPlanet = Array.IndexOf(planetsCcw, planetsCcw.First(x => !x));
             else
                 targetPlanet = Array.IndexOf(planetsCcw, planetsCcw.First(x => x));
-            Debug.LogFormat("[Exoplanets #{0}] The {1} planet is orbiting {2}, so it is the initial target planet.", moduleId, positionNames[startingTargetPlanet], planetsCcw[startingTargetPlanet] ? "counterclockwise" : "clockwise");
+            Debug.LogFormat("[Exoplanets #{0}] The {1} planet is orbiting {2}, so it is the initial target planet.", moduleId, positionNames[targetPlanet], planetsCcw[targetPlanet] ? "counterclockwise" : "clockwise");
         }
         targetDigit = planetSurfaces[targetPlanet];
         startingTargetDigit = targetDigit;
