@@ -311,6 +311,8 @@ public class exoplanets : MonoBehaviour
 
     void PressPlanet(KMSelectable button)
     {
+        if (moduleSolved)
+            return;
         var ix = Array.IndexOf(planetButtons, button);
         var submittedTime = ((int)bomb.GetTime()) % 10;
         var oridinals = new string[] { "1st", "2nd", "3rd" };
