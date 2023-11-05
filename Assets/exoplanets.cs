@@ -533,9 +533,9 @@ public class exoplanets : MonoBehaviour
                 yield break;
             else
             {
+                yield return null;
                 while (((int)bomb.GetTime()) % 10 != Array.IndexOf(digits, processedCmd[1]))
                     yield return null;
-                yield return null;
                 planetButtons[Array.IndexOf(positionNames, processedCmd[0])].OnInteract();
             }
         }
